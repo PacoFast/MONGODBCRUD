@@ -37,7 +37,7 @@ namespace ConsoleApp3
                 string unit = mDocument.GetCellValueAsString(rowStarts, 6);
                 string gender = "Masculino"; 
                 
-                alumnos.Add(new Alumno(numberControl, name, surname, secondSurname, unit, new Carrera(career), new Genero(gender)));
+               // alumnos.Add(new Alumno(numberControl, name, surname, secondSurname, unit, new Carrera(career), new Genero(gender)));
 
                
                 rowStarts++;

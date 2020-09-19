@@ -8,20 +8,18 @@ using System.Threading.Tasks;
 
 namespace ConsoleApp3
 {
+    [BsonDiscriminator("Genero")]
     class Genero
     {
-       
+        public ObjectId id { get; set; }
+        public string name { get; set; }
 
-        private string gender;
+        public Genero() { }
 
-        public Genero(string gender)
+        public Genero(string name)
         {
-            this.gender = gender;
+            this.name = name;
         }
-
-        public string Gender { get => gender; set => gender = value; }
-
-
 
     }
 }

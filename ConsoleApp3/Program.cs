@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.RightsManagement;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -18,64 +19,55 @@ namespace ConsoleApp3
 
 
             mongo = new MongoConnection("mongodb://localhost:27017", "tec");
-
+            
             /*
-            var filteredDocument = mongo.getDocumentByNumberControl<Alumno>("alumnos", "_numberControl", 171000264);
-            Console.WriteLine(filteredDocument._name);
+            mongo.insertDocument<Carrera>("carreras", new Carrera("Ing.Sistemas"));
+
+            mongo.insertDocument<Genero>("generos", new Genero("Masculino"));
+            */
+
+            Carrera carrera = mongo.getDocumentByName<Carrera>("carreras", "name", "Ing.Sistemas");
+
+            Genero genero = mongo.getDocumentByName<Genero>("generos", "name", "Masculino");
 
 
-            var filterDocuments = mongo.getFilteredDocuments<Alumno>("alumnos", "_career", "sistemas");
-            foreach(var student in filterDocuments)
+            //mongo.insertDocument<Alumno>("alumnos", new Alumno("171000264", carrera));
+
+            Alumno alumno = mongo.getDocumentByName<Alumno>("alumnos", "numberControl", "171000264");
+
+            /** INSERTANDO USUARIO
+            mongo.insertDocument<Usuario>("usuarios",
+                new Usuario
+                {
+                    name = "Francisco",
+                    surname = "Acosta", 
+                    secondSurname ="Virgen",
+                    rol = 1, 
+                    student = alumno
+                }
+            );
+            */
+
+            Usuario usuario = mongo.getDocumentByName<Usuario>("usuarios", "name", "Francisco");
+
+            Console.WriteLine($"{usuario.name} tiene el numero de control {usuario.student.numberControl}");
+
+            //mongo.insertDocument<Visita>("visitas", new Visita(usuario));
+
+            var query = from visitas in mongo.getAllDocuments<Visita>("visitas")
+                        where visitas.user.name == "Francisco"
+                        select new { visitas.user.student.numberControl, visitas.date, visitas.user.name };
+
+
+            foreach(var documentos in query)
             {
-                Console.WriteLine(student._name);
+
+                Console.WriteLine($"{documentos.name} entro en la fecha: {documentos.date.ToLocalTime()}" +
+                    $" y tiene el numero de control de: {documentos.numberControl}");
             }
 
-    */
-            //mongo.insertDocument<Genero>("genero", new Genero("Masculino"));
 
-            Genero genderDocument;
-            Carrera careerDocument;
-
-            /*
-            mongo.insertDocument<Genero>("generos", new Genero("Masculino"));
-            mongo.insertDocument<Genero>("generos", new Genero("Femenino"));
-
-            mongo.insertDocument<Carrera>("Carreras", new Carrera("Ing.Sistemas"));
-            mongo.insertDocument<Carrera>("Carreras", new Carrera("Ing.Naval"));
-            */
-
-            /**
-           genderDocument = mongo.getDocumentByName<Genero>("generos", "Gender", "Masculino");
-            careerDocument = mongo.getDocumentByName<Carrera>("Carreras", "Name", "Ing.Sistemas");
-
-
-
-            mongo.insertDocument<Alumno>("alumnos",
-              new Alumno(171212, "Gabo", "Arce", "Higuera", "Pradera", careerDocument, genderDocument));
-            
-
-            
-
-
-        
-
-
-            /*
-            Alumno alumno;
-            alumno = mongo.getDocumentByNumberControl<Alumno>("alumnos", "_numberControl", 171000264);
-            */
-
-            //mongo.insertDocument<Visita>("visitas",
-            // new Visita(new Usuario(new Alumno(171000264,"Juan", "Antonio", "Cantu", "Pradera", new Carrera("Ing.Sistemas"), new Genero("Masculino")))));
-
-            mongo.insertDocument<Visita>("visitas",
-                new Visita(new Alumno(17, "Francisco", "Acosta", "virgen", "pradera",
-                new Carrera("ing.siustemas"), new Genero("masculino"))));
-            
-
-                        
-                        
-
+            Console.WriteLine("HECHO!");
 
 
             Console.ReadKey();

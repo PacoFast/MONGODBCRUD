@@ -8,11 +8,13 @@ using System.Threading.Tasks;
 
 namespace ConsoleApp3
 {
-    class Carrera
+    [BsonDiscriminator("Carrera")]
+    public class Carrera
     {
-        
+        public ObjectId id { get; set; }
+        public string name { get; set; }
 
-        private string name;
+        public Carrera() { }
 
         public Carrera(string name)
         {
@@ -20,7 +22,6 @@ namespace ConsoleApp3
         }
 
 
-        public string Name { get => name; set => name = value; }
 
     }
 }

@@ -21,18 +21,7 @@ namespace ConsoleApp3
         }
         
 
-        /**
-         * Insertar un documento a la coleccion 
-         * @collection nombre de la coleccion 
-         * @ T document recibe una clase generica en este caso un modelo ya sea Alumno
-         * */
-        public void insertDocument<T>(string collection, T document)
-        {
-            if (String.IsNullOrWhiteSpace(collection))
-                throw new ArgumentException("El nombre de la colección debe ser proporcionado");
-            var studentCollection = database.GetCollection<T>(collection);
-            studentCollection.InsertOne(document);
-        }
+      
 
         /*OBTENER TODOS LOS DOCUMENTOS DE UNA COLLECTION CON EL NOMBRE DE LA COLLECTION*/
         public List<T> getAllDocuments<T>(string collection)
@@ -43,20 +32,7 @@ namespace ConsoleApp3
             return studentsCollection.Find(new BsonDocument()).ToList<T>(); 
         }
 
-        /**
-         * OBTENER UNA LISTA DE LA COLECCION FILTRADA
-         * @collection nombre de coleccion
-         * @field campo example: "_career"
-         * @param parametro a buscar
-         * */
-        public List<T> getFilteredDocuments<T>(string collection, string field, string param)
-        {
-            if (String.IsNullOrWhiteSpace(collection) || String.IsNullOrWhiteSpace(field) || String.IsNullOrWhiteSpace(param))
-                throw new ArgumentException("El nombre, campo o parametro de busqueda deben ser proporcionado");
-            var studentCollection = database.GetCollection<T>(collection);
-            var filter = Builders<T>.Filter.Eq(field, param);
-            return studentCollection.Find(filter).ToList<T>(); 
-        }
+   
 
         /**
          * Obtener documentos por numero de control
@@ -73,6 +49,11 @@ namespace ConsoleApp3
             return studentCollection.Find(filter).First(); 
         }
 
+        /**
+         @collection nombre coleccion
+         @field campo a buscar
+         @param parametro de busqueda
+         */
         public T getDocumentByName<T>(string collection, string field, string param)
         {
             if (String.IsNullOrWhiteSpace(collection) || String.IsNullOrWhiteSpace(field) || String.IsNullOrWhiteSpace(param))
@@ -84,6 +65,18 @@ namespace ConsoleApp3
 
 
 
+        /**
+         * Insertar un documento a la coleccion 
+         * @collection nombre de la coleccion 
+         * @ T document recibe una clase generica en este caso un modelo ya sea Alumno
+         * */
+        public void insertDocument<T>(string collection, T document)
+        {
+            if (String.IsNullOrWhiteSpace(collection))
+                throw new ArgumentException("El nombre de la colección debe ser proporcionado");
+            var studentCollection = database.GetCollection<T>(collection);
+            studentCollection.InsertOne(document);
+        }
 
 
 
@@ -91,9 +84,11 @@ namespace ConsoleApp3
 
 
 
-        
 
-    
+
+
+
+
 
 
 

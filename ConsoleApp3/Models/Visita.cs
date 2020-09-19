@@ -3,24 +3,29 @@ using MongoDB.Bson.Serialization.Attributes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
+using System.Security.RightsManagement;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace ConsoleApp3
 {
-    class Visita
-    {
-        [BsonId]
-        private Guid id;
-        private Object user;
-        private DateTime date;
-        private long universalSeconds;
 
-        public Visita(Object user)
+    [BsonDiscriminator("Visita")]
+     class Visita
+    {
+        public ObjectId id { get; set; }
+        public Usuario user { get; set; }
+        public DateTime date { get; set; }
+        public long universalSeconds { get; set; }
+   
+        public Visita(Usuario user)
         {
+
             this.user = user;
             date = DateTime.UtcNow;
             universalSeconds = getUniversalSeconds();
+            
         }
 
         public long getUniversalSeconds()
@@ -29,11 +34,6 @@ namespace ConsoleApp3
             return seconds;
         }
 
-        public Guid Id { get => id; }
-        public DateTime Date { get => date; set => date = value; }
-        public  Object User { get => user; set => user = value; }
-
-        public long UnixSeconds { get => this.universalSeconds; set => this.universalSeconds = value; }
-
+       
     }
 }

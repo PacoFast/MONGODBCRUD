@@ -8,19 +8,18 @@ using System.Threading.Tasks;
 
 namespace ConsoleApp3
 {
+    [BsonDiscriminator("Departamento")]
+
     class Departamento
     {
-        [BsonId]
-        private Guid id;
-        private string name;
+        public ObjectId id { get; set; }
+        public string name { get; set; }
 
+        public Departamento() { }
 
         public Departamento(string name)
         {
-            this.name = name; 
+            this.name = name;
         }
-
-        public Guid Id { get => id; set => id = value; }
-        public string Name { get => name; set => name = value; }
     }
 }
